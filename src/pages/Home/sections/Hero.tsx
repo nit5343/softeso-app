@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import MotionWrapper from '../../../components/ui/MotionWrapper';
 import Typography from '../../../components/ui/Typography';
 import TypeWriter from '../../../components/ui/TypeWriter';
+import HeroBgImage from '../../../assets/hero-bg.avif';
 
 const Hero = () => {
   const parallaxRef = useRef<HTMLDivElement>(null);
@@ -22,7 +23,7 @@ const Hero = () => {
     <section className="relative min-h-screen flex items-center overflow-hidden">
       <div ref={parallaxRef} className="absolute inset-0 will-change-transform">
         <img
-          src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80"
+          src={HeroBgImage}
           alt="Hero Background"
           className="w-full h-full object-cover scale-110"
         />

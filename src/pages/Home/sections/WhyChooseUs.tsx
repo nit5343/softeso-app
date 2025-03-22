@@ -5,6 +5,7 @@ import Grid from '../../../components/ui/Grid';
 import Typography from '../../../components/ui/Typography';
 import MotionWrapper from '../../../components/ui/MotionWrapper';
 import Icon from '../../../components/ui/Icon';
+import HeroBgImage from '../../../assets/hero-bg.avif';
 
 const features = [
   { icon: FaRocket, title: 'Fast Delivery', description: 'Quick turnaround without compromising quality' },
@@ -19,7 +20,7 @@ const WhyChooseUs = () => (
   <Section className="bg-neutral-900 text-white relative overflow-hidden">
     <div className="absolute inset-0 opacity-20">
       <img
-        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80"
+        src={HeroBgImage}
         alt="Background Pattern"
         className="w-full h-full object-cover"
       />

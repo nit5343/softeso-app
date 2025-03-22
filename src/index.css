@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Primary Colors */
+    --c-primary-50: 237, 246, 253;
+    --c-primary-100: 219, 237, 251;
+    --c-primary-200: 183, 219, 247;
+    --c-primary-300: 147, 201, 243;
+    --c-primary-400: 111, 183, 239;
+    --c-primary-500: 18, 135, 193;
+    --c-primary-600: 16, 122, 174;
+    --c-primary-700: 14, 108, 154;
+    --c-primary-800: 11, 95, 135;
+    --c-primary-900: 9, 81, 116;
+    
+    /* Neutral Colors */
+    --c-neutral-50: 248, 250, 252;
+    --c-neutral-100: 241, 245, 249;
+    --c-neutral-200: 226, 232, 240;
+    --c-neutral-300: 203, 213, 225;
+    --c-neutral-400: 148, 163, 184;
+    --c-neutral-500: 100, 116, 139;
+    --c-neutral-600: 71, 85, 105;
+    --c-neutral-700: 51, 65, 85;
+    --c-neutral-800: 30, 41, 59;
+    --c-neutral-900: 15, 23, 42;
+  }
+
+  html {
+    font-family: 'JetBrains Mono', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply antialiased bg-neutral-50 text-neutral-900;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent;
+  }
+
+  .bg-gradient {
+    @apply bg-gradient-to-r from-primary-500 to-primary-700;
+  }
+
+  .bg-pattern {
+    @apply relative bg-primary-900;
+  }
+
+  .bg-pattern::before {
+    content: '';
+    @apply absolute inset-0 pointer-events-none;
+    background-image: linear-gradient(45deg, rgb(255 255 255 / 0.1) 25%, transparent 25%, transparent 75%, rgb(255 255 255 / 0.1) 75%, rgb(255 255 255 / 0.1)),
+                      linear-gradient(45deg, rgb(255 255 255 / 0.1) 25%, transparent 25%, transparent 75%, rgb(255 255 255 / 0.1) 75%, rgb(255 255 255 / 0.1));
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+  }
+}

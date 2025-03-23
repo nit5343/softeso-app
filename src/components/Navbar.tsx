@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Logo from '../assets/Logo';
 import { ROUTES } from '../constants/routes';
+import LogoImg from '../assets/logo.png';
 
 const NAV_ITEMS = [
   { path: ROUTES.HOME, label: 'Home' },
@@ -19,11 +19,8 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link to={ROUTES.HOME} className="flex items-center space-x-2">
-              <Logo className="h-[90px] text-primary-600" />
-              <span className="text-2xl font-bold text-gradient font-['Montserrat_Alternates']">
-                Softeso
-              </span>
+            <Link to={ROUTES.HOME} className="flex items-center h-full p-4">
+              <img src={LogoImg} alt="Softeso" className='h-full' />
             </Link>
           </div>
           

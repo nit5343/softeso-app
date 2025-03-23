@@ -11,10 +11,10 @@ const ContactUsSection = () => {
 
   return (
     <>
-      <Section className="bg-primary-700 bg-pattern text-white" withContainer>
+      <Section className="bg-pattern text-white" withContainer>
         <MotionWrapper animation="fadeIn" viewport className="text-center">
           <Typography variant="h2" className="mb-6">Ready to Start Your Project?</Typography>
-          <Typography className="text-xl mb-10 text-white/90">
+          <Typography className="text-white/90 text-xl mb-10">
             Let's work together to bring your vision to life
           </Typography>
           <Button

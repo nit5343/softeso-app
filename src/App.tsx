@@ -10,7 +10,6 @@ import Terms from './pages/Terms';
 import Returns from './pages/Returns';
 import { ROUTES } from './constants/routes';
 
-// Scroll to top component
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 

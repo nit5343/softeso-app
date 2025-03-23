@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MdEmail, MdPhone, MdLocationOn, MdSend } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
 import Section from '../../../components/ui/Section';
@@ -18,11 +18,45 @@ interface ContactFormData {
 }
 
 const ContactForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<ContactFormData>();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<ContactFormData>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
 
-  const onSubmit = (data: ContactFormData) => {
-    console.log(data);
-    // Handle form submission
+  const onSubmit = async (data: ContactFormData) => {
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: '' });
+
+    try {
+      const response = await fetch('/api/sendEmail', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to send message');
+      }
+
+      setSubmitStatus({
+        type: 'success',
+        message: 'Thank you for your message. We will get back to you soon!'
+      });
+      reset(); // Clear the form
+    } catch (error) {
+      setSubmitStatus({
+        type: 'error',
+        message: 'Failed to send message. Please try again later.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -36,6 +70,7 @@ const ContactForm = () => {
                 {...register("name", { required: "Name is required" })}
                 error={errors.name?.message}
                 placeholder="Your name"
+                disabled={isSubmitting}
               />
               
               <Input
@@ -49,6 +84,7 @@ const ContactForm = () => {
                 })}
                 error={errors.email?.message}
                 placeholder="your.email@example.com"
+                disabled={isSubmitting}
               />
               
               <Textarea
@@ -57,10 +93,26 @@ const ContactForm = () => {
                 error={errors.message?.message}
                 rows={4}
                 placeholder="How can we help you?"
+                disabled={isSubmitting}
               />
               
-              <Button type="submit" icon={MdSend} className="w-full">
-                Send Message
+              {submitStatus.type && (
+                <div className={`p-4 rounded-lg ${
+                  submitStatus.type === 'success' 
+                    ? 'bg-green-50 text-green-700' 
+                    : 'bg-red-50 text-red-700'
+                }`}>
+                  {submitStatus.message}
+                </div>
+              )}
+
+              <Button 
+                type="submit" 
+                icon={MdSend} 
+                className="w-full"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </Button>
             </form>
           </Card>
@@ -72,7 +124,7 @@ const ContactForm = () => {
             
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
-                <MdEmail className="w-6 h-6 text-primary-600 flex-shrink-0 mt-1" />
+                <MdEmail className="flex-shrink-0 h-6 text-primary-600 w-6 mt-1" />
                 <div>
                   <Typography variant="h4">Email</Typography>
                   <Typography className="text-gray-600">{COMPANY.contact.email}</Typography>
@@ -80,7 +132,7 @@ const ContactForm = () => {
               </div>
               
               <div className="flex items-start space-x-4">
-                <MdPhone className="w-6 h-6 text-primary-600 flex-shrink-0 mt-1" />
+                <MdPhone className="flex-shrink-0 h-6 text-primary-600 w-6 mt-1" />
                 <div>
                   <Typography variant="h4">Phone</Typography>
                   <Typography className="text-gray-600">{COMPANY.contact.phone}</Typography>
@@ -88,7 +140,7 @@ const ContactForm = () => {
               </div>
               
               <div className="flex items-start space-x-4">
-                <MdLocationOn className="w-6 h-6 text-primary-600 flex-shrink-0 mt-1" />
+                <MdLocationOn className="flex-shrink-0 h-6 text-primary-600 w-6 mt-1" />
                 <div>
                   <Typography variant="h4">Address</Typography>
                   <Typography className="text-gray-600">{COMPANY.contact.address}</Typography>
@@ -98,7 +150,7 @@ const ContactForm = () => {
 
             <div className="mt-8">
               <Typography variant="h4" className="mb-4">Business Hours</Typography>
-              <ul className="space-y-2 text-gray-600">
+              <ul className="text-gray-600 space-y-2">
                 <li>Monday - Friday: {COMPANY.businessHours.weekday}</li>
                 <li>Saturday: {COMPANY.businessHours.saturday}</li>
                 <li>Sunday: {COMPANY.businessHours.sunday}</li>

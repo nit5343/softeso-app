@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { MdClose } from 'react-icons/md';
 import Input from './ui/Input';
@@ -6,6 +6,7 @@ import Select from './ui/Select';
 import Textarea from './ui/Textarea';
 import Button from './ui/Button';
 import Typography from './ui/Typography';
+import { useForm } from 'react-hook-form';
 
 // Bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement('#root');
@@ -15,18 +16,66 @@ interface ContactModalProps {
   onClose: () => void;
 }
 
+interface FormData {
+  name: string;
+  email: string;
+  service: string;
+  budget: string;
+  requirements: string;
+  timeline: string;
+}
+
 const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission
-    onClose();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
+
+  const onSubmit = async (data: FormData) => {
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: '' });
+
+    try {
+      const response = await fetch('/api/sendEmail', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to send message');
+      }
+
+      setSubmitStatus({
+        type: 'success',
+        message: 'Thank you for your project request. We will get back to you soon!'
+      });
+      reset();
+      setTimeout(() => {
+        onClose();
+        setSubmitStatus({ type: null, message: '' });
+      }, 3000);
+    } catch (error) {
+      setSubmitStatus({
+        type: 'error',
+        message: 'Failed to send message. Please try again later.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
-      className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xl bg-white rounded-2xl shadow-2xl p-8 outline-none"
+      className="bg-white p-8 rounded-2xl shadow-2xl w-full -translate-x-1/2 -translate-y-1/2 fixed left-1/2 max-w-xl outline-none top-1/2"
       overlayClassName="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
     >
       <div className="flex justify-between items-center mb-6">
@@ -36,31 +85,39 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
         <button
           onClick={onClose}
           className="text-gray-500 hover:text-gray-700 transition-colors"
+          disabled={isSubmitting}
         >
           <MdClose size={24} />
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
           <Input
             label="Name"
-            id="name"
-            type="text"
-            required
+            {...register("name", { required: "Name is required" })}
+            error={errors.name?.message}
+            disabled={isSubmitting}
           />
           <Input
             label="Email"
-            id="email"
-            type="email"
-            required
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Invalid email address"
+              }
+            })}
+            error={errors.email?.message}
+            disabled={isSubmitting}
           />
         </div>
 
         <Select
           label="Service Required"
-          id="service"
-          required
+          {...register("service", { required: "Please select a service" })}
+          error={errors.service?.message}
+          disabled={isSubmitting}
           options={[
             { value: '', label: 'Select a service' },
             { value: 'web', label: 'Web Development' },
@@ -72,8 +129,9 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 
         <Select
           label="Budget Range"
-          id="budget"
-          required
+          {...register("budget", { required: "Please select a budget range" })}
+          error={errors.budget?.message}
+          disabled={isSubmitting}
           options={[
             { value: '', label: 'Select budget range' },
             { value: 'small', label: '$5,000 - $10,000' },
@@ -85,16 +143,18 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 
         <Textarea
           label="Project Requirements"
-          id="requirements"
+          {...register("requirements", { required: "Please describe your requirements" })}
+          error={errors.requirements?.message}
           rows={4}
-          required
           placeholder="Please describe your project requirements..."
+          disabled={isSubmitting}
         />
 
         <Select
           label="Expected Timeline"
-          id="timeline"
-          required
+          {...register("timeline", { required: "Please select a timeline" })}
+          error={errors.timeline?.message}
+          disabled={isSubmitting}
           options={[
             { value: '', label: 'Select timeline' },
             { value: '1-3', label: '1-3 months' },
@@ -104,8 +164,18 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
           ]}
         />
 
-        <Button type="submit" className="w-full">
-          Submit Request
+        {submitStatus.type && (
+          <div className={`p-4 rounded-lg ${
+            submitStatus.type === 'success' 
+              ? 'bg-green-50 text-green-700' 
+              : 'bg-red-50 text-red-700'
+          }`}>
+            {submitStatus.message}
+          </div>
+        )}
+
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? 'Submitting...' : 'Submit Request'}
         </Button>
       </form>
     </Modal>

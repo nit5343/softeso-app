@@ -74,11 +74,11 @@ const ContactForm = () => {
 
   return (
     <Section>
-      <Grid cols={2} className="items-stretch">
+      <Grid cols={1} className="items-stretch lg:grid-cols-2">
         <MotionWrapper animation="fadeInLeft" className="h-full">
           <Card className="flex flex-col h-full">
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col space-y-6">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Input
                   label="Name"
                   {...register("name", { required: "Name is required" })}
@@ -161,7 +161,7 @@ const ContactForm = () => {
           <Card className="flex flex-col h-full">
             <Typography variant="h2" className="text-gradient mb-6">Contact Information</Typography>
             
-            <div className="space-y-6">
+            <div className="flex-1 space-y-6">
               <div className="flex items-start space-x-4">
                 <MdEmail className="flex-shrink-0 h-6 text-primary-600 w-6 mt-1" />
                 <div>
@@ -187,7 +187,7 @@ const ContactForm = () => {
               </div>
             </div>
 
-            <div className="flex-1 mt-8">
+            <div className="mt-auto pt-8">
               <Typography variant="h4" className="mb-4">Business Hours</Typography>
               <ul className="text-gray-600 mb-6 space-y-2">
                 <li>Monday - Friday: {COMPANY.businessHours.weekday}</li>

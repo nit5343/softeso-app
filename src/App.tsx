@@ -7,7 +7,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Terms from './pages/Terms';
-import Returns from './pages/Returns';
+import Refund from './pages/Refund';
 import WebDevelopment from './pages/Services/WebDevelopment';
 import MobileDevelopment from './pages/Services/MobileDevelopment';
 import UIUXDesign from './pages/Services/UIUXDesign';
@@ -40,7 +40,7 @@ function App() {
               <Route path={ROUTES.ABOUT} element={<About />} />
               <Route path={ROUTES.CONTACT} element={<Contact />} />
               <Route path={ROUTES.TERMS} element={<Terms />} />
-              <Route path={ROUTES.RETURNS} element={<Returns />} />
+              <Route path={ROUTES.REFUND} element={<Refund />} />
               <Route path={ROUTES.SERVICES.WEB_DEVELOPMENT} element={<WebDevelopment />} />
               <Route path={ROUTES.SERVICES.MOBILE_DEVELOPMENT} element={<MobileDevelopment />} />
               <Route path={ROUTES.SERVICES.UI_UX_DESIGN} element={<UIUXDesign />} />

@@ -3,7 +3,7 @@ import SEO from '../../components/SEO';
 import Hero from './sections/Hero';
 import Content from './sections/Content';
 
-const Returns = () => {
+const Refund = () => {
   return (
     <div className="min-h-screen pt-16">
       <SEO
@@ -23,4 +23,4 @@ const Returns = () => {
   );
 };
 
-export default Returns;
+export default Refund;

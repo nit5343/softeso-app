@@ -86,10 +86,10 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
-      className="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 outline-none overflow-hidden flex flex-col"
+      className="flex flex-col bg-white rounded-2xl shadow-2xl w-full -translate-x-1/2 -translate-y-1/2 fixed left-1/2 max-h-[90vh] max-w-xl outline-none overflow-hidden top-1/2"
       overlayClassName="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overflow-y-auto"
     >
-      <div className="flex justify-between items-center p-8 border-b">
+      <div className="flex border-b justify-between p-8 items-center">
         <Typography variant="h2" className="text-gradient">
           Let's Start Your Project
         </Typography>
@@ -102,7 +102,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
         </button>
       </div>
 
-      <div className="overflow-y-auto flex-1 p-8">
+      <div className="flex-1 p-8 overflow-y-auto">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <Input

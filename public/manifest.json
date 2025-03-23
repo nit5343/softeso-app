@@ -1,0 +1,21 @@
+{
+    "name": "Softeso",
+    "short_name": "Softeso",
+    "description": "Professional software development services including web development, mobile apps, UI/UX design, and cloud solutions.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#1287C1",
+    "orientation": "portrait-primary",
+    "icons": [
+      {
+        "src": "/favicon.svg",
+        "type": "image/svg+xml",
+        "sizes": "512x512"
+      }
+    ],
+    "categories": ["business", "technology", "productivity"],
+    "lang": "en-US",
+    "dir": "ltr",
+    "prefer_related_applications": false
+  }

@@ -38,9 +38,20 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     setSubmitStatus({ type: null, message: '' });
 
     try {
+      const formFields = [
+        { label: 'Service Required', value: data.service },
+        { label: 'Budget Range', value: data.budget },
+        { label: 'Timeline', value: data.timeline },
+        { label: 'Project Requirements', value: data.requirements }
+      ];
+
       const response = await fetch('/api/sendEmail', {
         method: 'POST',
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          fields: formFields
+        }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -70,6 +81,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
       setIsSubmitting(false);
     }
   };
+
 
   return (
     <Modal
@@ -120,10 +132,10 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
           disabled={isSubmitting}
           options={[
             { value: '', label: 'Select a service' },
-            { value: 'web', label: 'Web Development' },
-            { value: 'mobile', label: 'Mobile App Development' },
-            { value: 'ui', label: 'UI/UX Design' },
-            { value: 'other', label: 'Other' }
+            { value: 'Web Development', label: 'Web Development' },
+            { value: 'Mobile App Development', label: 'Mobile App Development' },
+            { value: 'UI/UX Design', label: 'UI/UX Design' },
+            { value: 'Other', label: 'Other' }
           ]}
         />
 
@@ -134,10 +146,10 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
           disabled={isSubmitting}
           options={[
             { value: '', label: 'Select budget range' },
-            { value: 'small', label: '$5,000 - $10,000' },
-            { value: 'medium', label: '$10,000 - $25,000' },
-            { value: 'large', label: '$25,000 - $50,000' },
-            { value: 'enterprise', label: '$50,000+' }
+            { value: '$5,000 - $10,000', label: '$5,000 - $10,000' },
+            { value: '$10,000 - $25,000', label: '$10,000 - $25,000' },
+            { value: '$25,000 - $50,000', label: '$25,000 - $50,000' },
+            { value: '$50,000+', label: '$50,000+' }
           ]}
         />
 
@@ -157,10 +169,10 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
           disabled={isSubmitting}
           options={[
             { value: '', label: 'Select timeline' },
-            { value: '1-3', label: '1-3 months' },
-            { value: '3-6', label: '3-6 months' },
-            { value: '6-12', label: '6-12 months' },
-            { value: '12+', label: '12+ months' }
+            { value: '1-3 months', label: '1-3 months' },
+            { value: '3-6 months', label: '3-6 months' },
+            { value: '6-12 months', label: '6-12 months' },
+            { value: '12+ months', label: '12+ months' }
           ]}
         />
 

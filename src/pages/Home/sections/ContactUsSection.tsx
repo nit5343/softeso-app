@@ -20,6 +20,7 @@ const ContactUsSection = () => {
           <Button
             variant="secondary"
             icon={MdArrowForward}
+            iconPosition='left'
             onClick={() => setIsModalOpen(true)}
             className="mx-auto"
           >

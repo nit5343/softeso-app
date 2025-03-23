@@ -8,6 +8,10 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Terms from './pages/Terms';
 import Returns from './pages/Returns';
+import WebDevelopment from './pages/Services/WebDevelopment';
+import MobileDevelopment from './pages/Services/MobileDevelopment';
+import UIUXDesign from './pages/Services/UIUXDesign';
+import CloudDevOps from './pages/Services/CloudDevOps';
 import { ROUTES } from './constants/routes';
 
 const ScrollToTop = () => {
@@ -37,6 +41,10 @@ function App() {
               <Route path={ROUTES.CONTACT} element={<Contact />} />
               <Route path={ROUTES.TERMS} element={<Terms />} />
               <Route path={ROUTES.RETURNS} element={<Returns />} />
+              <Route path={ROUTES.SERVICES.WEB_DEVELOPMENT} element={<WebDevelopment />} />
+              <Route path={ROUTES.SERVICES.MOBILE_DEVELOPMENT} element={<MobileDevelopment />} />
+              <Route path={ROUTES.SERVICES.UI_UX_DESIGN} element={<UIUXDesign />} />
+              <Route path={ROUTES.SERVICES.CLOUD_DEVOPS} element={<CloudDevOps />} />
             </Routes>
           </main>
           <Footer />

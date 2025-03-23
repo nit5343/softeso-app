@@ -7,6 +7,7 @@ import Card from '../../../components/ui/Card';
 import Typography from '../../../components/ui/Typography';
 import Input from '../../../components/ui/Input';
 import Textarea from '../../../components/ui/Textarea';
+import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
 import MotionWrapper from '../../../components/ui/MotionWrapper';
 import { COMPANY } from '../../../config/company';
@@ -14,7 +15,9 @@ import { COMPANY } from '../../../config/company';
 interface ContactFormData {
   name: string;
   email: string;
+  subject: string;
   message: string;
+  inquiryType: string;
 }
 
 const ContactForm = () => {
@@ -30,9 +33,19 @@ const ContactForm = () => {
     setSubmitStatus({ type: null, message: '' });
 
     try {
+      const formFields = [
+        { label: 'Subject', value: data.subject },
+        { label: 'Inquiry Type', value: data.inquiryType },
+        { label: 'Message', value: data.message }
+      ];
+
       const response = await fetch('/api/sendEmail', {
         method: 'POST',
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          fields: formFields
+        }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -48,7 +61,7 @@ const ContactForm = () => {
         type: 'success',
         message: 'Thank you for your message. We will get back to you soon!'
       });
-      reset(); // Clear the form
+      reset();
     } catch (error) {
       setSubmitStatus({
         type: 'error',
@@ -61,30 +74,55 @@ const ContactForm = () => {
 
   return (
     <Section>
-      <Grid cols={2}>
-        <MotionWrapper animation="fadeInLeft">
-          <Card>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <Grid cols={2} className="items-stretch">
+        <MotionWrapper animation="fadeInLeft" className="h-full">
+          <Card className="flex flex-col h-full">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  label="Name"
+                  {...register("name", { required: "Name is required" })}
+                  error={errors.name?.message}
+                  placeholder="Your name"
+                  disabled={isSubmitting}
+                />
+                
+                <Input
+                  label="Email"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Invalid email address"
+                    }
+                  })}
+                  error={errors.email?.message}
+                  placeholder="your.email@example.com"
+                  disabled={isSubmitting}
+                />
+              </div>
+
               <Input
-                label="Name"
-                {...register("name", { required: "Name is required" })}
-                error={errors.name?.message}
-                placeholder="Your name"
+                label="Subject"
+                {...register("subject", { required: "Subject is required" })}
+                error={errors.subject?.message}
+                placeholder="Brief subject of your inquiry"
                 disabled={isSubmitting}
               />
-              
-              <Input
-                label="Email"
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email address"
-                  }
-                })}
-                error={errors.email?.message}
-                placeholder="your.email@example.com"
+
+              <Select
+                label="Inquiry Type"
+                {...register("inquiryType", { required: "Please select an inquiry type" })}
+                error={errors.inquiryType?.message}
                 disabled={isSubmitting}
+                options={[
+                  { value: '', label: 'Select inquiry type' },
+                  { value: 'General Inquiry', label: 'General Inquiry' },
+                  { value: 'Project Discussion', label: 'Project Discussion' },
+                  { value: 'Technical Support', label: 'Technical Support' },
+                  { value: 'Partnership Opportunity', label: 'Partnership Opportunity' },
+                  { value: 'Other', label: 'Other' }
+                ]}
               />
               
               <Textarea
@@ -94,6 +132,7 @@ const ContactForm = () => {
                 rows={4}
                 placeholder="How can we help you?"
                 disabled={isSubmitting}
+                className="flex-1"
               />
               
               {submitStatus.type && (
@@ -108,8 +147,8 @@ const ContactForm = () => {
 
               <Button 
                 type="submit" 
-                icon={MdSend} 
-                className="w-full"
+                icon={MdSend}
+                className="w-full mt-auto"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Sending...' : 'Send Message'}
@@ -118,8 +157,8 @@ const ContactForm = () => {
           </Card>
         </MotionWrapper>
 
-        <MotionWrapper animation="fadeInRight">
-          <Card>
+        <MotionWrapper animation="fadeInRight" className="h-full">
+          <Card className="flex flex-col h-full">
             <Typography variant="h2" className="text-gradient mb-6">Contact Information</Typography>
             
             <div className="space-y-6">
@@ -148,9 +187,9 @@ const ContactForm = () => {
               </div>
             </div>
 
-            <div className="mt-8">
+            <div className="flex-1 mt-8">
               <Typography variant="h4" className="mb-4">Business Hours</Typography>
-              <ul className="text-gray-600 space-y-2">
+              <ul className="text-gray-600 mb-6 space-y-2">
                 <li>Monday - Friday: {COMPANY.businessHours.weekday}</li>
                 <li>Saturday: {COMPANY.businessHours.saturday}</li>
                 <li>Sunday: {COMPANY.businessHours.sunday}</li>

@@ -16,7 +16,7 @@ const Button: React.FC<ButtonProps> = ({
   className,
   ...props
 }) => {
-  const baseStyles = "px-8 py-4 rounded-full text-lg font-semibold transition-all duration-500 flex items-center gap-2";
+  const baseStyles = "px-8 py-4 rounded-full text-lg font-semibold transition-all duration-500 flex items-center";
   
   const variants = {
     primary: "bg-gradient text-white hover:opacity-90",
@@ -25,7 +25,12 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
-      className={cn(baseStyles, variants[variant], className)}
+      className={cn(
+        baseStyles,
+        variants[variant],
+        iconPosition === 'right' ? 'justify-between' : 'justify-start gap-2',
+        className
+      )}
       {...props}
     >
       {Icon && iconPosition === 'left' && <Icon size={20} />}

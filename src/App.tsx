@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -10,11 +10,26 @@ import Terms from './pages/Terms';
 import Returns from './pages/Returns';
 import { ROUTES } from './constants/routes';
 
+// Scroll to top component
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }, [pathname]);
+
+  return null;
+};
+
 function App() {
   return (
     <HelmetProvider>
       <Router>
         <div className="flex flex-col min-h-screen">
+          <ScrollToTop />
           <Navbar />
           <main className="flex-grow">
             <Routes>

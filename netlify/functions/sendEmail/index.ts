@@ -96,7 +96,7 @@ const emailTemplate = `<!DOCTYPE html>
 <body>
   <div class="container">
     <div class="header">
-      <h1 style="margin: 0; font-size: 24px;">New Project Request</h1>
+      <h1 style="margin: 0; font-size: 24px;">New Request</h1>
       <p style="margin: 10px 0 0 0; opacity: 0.9;">A new inquiry has been submitted through the website</p>
     </div>
     <div class="content">

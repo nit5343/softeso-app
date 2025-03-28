@@ -149,7 +149,9 @@ export const handler: Handler = async (event) => {
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
+      to: 'contact@softeso.com',
+      cc: process.env.EMAIL_USER,
+      replyTo: data.email,
       subject: `New Request on Softeso Website from ${data.name} (${data.email})`,
       html
     };
